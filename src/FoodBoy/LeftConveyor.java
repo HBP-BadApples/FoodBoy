@@ -1,10 +1,6 @@
 package FoodBoy;
 
-import java.applet.Applet;
 import java.awt.Image;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
 
 public class LeftConveyor{
 
@@ -17,6 +13,7 @@ public class LeftConveyor{
 		leftConveyor = new Queue<Food>();
 		images = new Image[3];
 		initImages(game);
+		stepper = 0;
 	}
 
 	private void initImages(Game game) {

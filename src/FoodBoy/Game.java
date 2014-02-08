@@ -22,12 +22,12 @@ public class Game extends Applet implements Runnable, KeyListener{
 
 	@Override
 	public void init() {
-
-		setSize(800, 480);
+		setSize(950, 480);
 		setBackground(Color.WHITE);
 		setFocusable(true);
 		Frame frame = (Frame)this.getParent().getParent();
 		frame.setTitle("Food Boy");
+		frame.setResizable(false);
 		addKeyListener(this);
 		try{
 			base = getDocumentBase();
@@ -38,10 +38,7 @@ public class Game extends Applet implements Runnable, KeyListener{
 		character = getImage(base, "data/character.png");
 		background = getImage(base, "data/background.png");
 		leftBelt = new LeftConveyor(this);
-		//rightBelt = new RightConveyor(this);
-		leftBeltImage = leftBelt.getImage(); // gets the first image of the belt
-		//rightBeltImage = rightBelt.getImage(0);
-
+		rightBelt = new RightConveyor(this);
 
 	}
 
@@ -64,11 +61,12 @@ public class Game extends Applet implements Runnable, KeyListener{
 	@Override
 	public void run() {
 		while(true){
+			rightBelt.update();
 			leftBelt.update();
 			repaint();
 			try{
-				Thread.sleep(17);
-			}catch (InterruptedException e){
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
@@ -91,7 +89,8 @@ public class Game extends Applet implements Runnable, KeyListener{
 
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(leftBelt.getImage(), 50, 240, this);
+		g.drawImage(leftBelt.getImage(), 0, 300, this);
+		g.drawImage(rightBelt.getImage(), this.getWidth() - rightBelt.getImage().getWidth(this), 300, this);
 		// TODO Auto-generated method stub
 	}
 
@@ -124,7 +123,7 @@ public class Game extends Applet implements Runnable, KeyListener{
 	public URL getBase() {
 		return base;
 	}
-	
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
