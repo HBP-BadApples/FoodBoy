@@ -16,7 +16,7 @@ public class Game extends Applet implements Runnable, KeyListener{
 	private Image image, character, background;
 	private Graphics second;
 	private URL base;
-	private static Background bg1, bg2;
+	private static Background bg;
 	
 	@Override
 	public void init() {
@@ -40,6 +40,8 @@ public class Game extends Applet implements Runnable, KeyListener{
 	
 	@Override
 	public void start() {
+		bg = new Background(0,0);
+		
 		Thread thread=new Thread(this);
 		thread.start();
 	}
@@ -91,10 +93,12 @@ public class Game extends Applet implements Runnable, KeyListener{
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()){
 			case KeyEvent.VK_LEFT:
+			man.leftHand();
 			System.out.println("Left Hand!");
 			break;
 			
 			case KeyEvent.VK_RIGHT:
+			man.rightHand();
 			System.out.println("Right Hand!");
 			break;
 		}
@@ -104,10 +108,12 @@ public class Game extends Applet implements Runnable, KeyListener{
 	public void keyReleased(KeyEvent e) {
 		switch(e.getKeyCode()){
 		case KeyEvent.VK_LEFT:
+		man.stopLeft();
 		System.out.println("Stop using left hand!");
 		break;
 		
 		case KeyEvent.VK_RIGHT:
+		man.stopRight();
 		System.out.println("Stop using right hand!");
 		break;
 	}
@@ -119,7 +125,10 @@ public class Game extends Applet implements Runnable, KeyListener{
 	    // TODO Auto-generated method stub
 	    
 	}
-
+ 
+	public static Background getBg(){
+		return bg;
+	}
 	
 	
 }
