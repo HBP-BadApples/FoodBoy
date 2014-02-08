@@ -13,92 +13,95 @@ import java.net.URL;
 public class Game extends Applet implements Runnable, KeyListener{
 
 	private FatMan man;
-	private Image image, character, background;
+	private Image image, character, background, leftBeltImage, rightBeltImage;
+	private LeftConveyor leftBelt;
+	private RightConveyor rightBelt;
 	private Graphics second;
 	private URL base;
-	private static Background bg;
-	
+	private static Background bg1, bg2;
+
 	@Override
 	public void init() {
-		
-		setSize(800, 480);
-		setBackground(Color.BLACK);
+		setSize(950, 480);
+		setBackground(Color.WHITE);
 		setFocusable(true);
 		Frame frame = (Frame)this.getParent().getParent();
 		frame.setTitle("Food Boy");
+		frame.setResizable(false);
 		addKeyListener(this);
 		try{
 			base = getDocumentBase();
 		} catch(Exception e){
-			
+
 		}
-		
+
 		character = getImage(base, "data/character.png");
 		background = getImage(base, "data/background.png");
-		
+		leftBelt = new LeftConveyor(this);
+		rightBelt = new RightConveyor(this);
+
 	}
-	
+
 	@Override
 	public void start() {
-		bg = new Background(0,0);
-		
 		Thread thread=new Thread(this);
 		thread.start();
 	}
-	
+
 	@Override
 	public void stop() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void run() {
 		while(true){
+			rightBelt.update();
+			leftBelt.update();
 			repaint();
 			try{
-				Thread.sleep(17);
-			}catch (InterruptedException e){
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	@Override
-    public void update(Graphics g) {
-        if (image == null) {
-            image = createImage(this.getWidth(), this.getHeight());
-            second = image.getGraphics();
-        }
+	public void update(Graphics g) {
+		if (image == null) {
+			image = createImage(this.getWidth(), this.getHeight());
+			second = image.getGraphics();
+		}
 
-        second.setColor(getBackground());
-        second.fillRect(0, 0, getWidth(), getHeight());
-        second.setColor(getForeground());
-        paint(second);
+		second.setColor(getBackground());
+		second.fillRect(0, 0, getWidth(), getHeight());
+		second.setColor(getForeground());
+		paint(second);
 
-        g.drawImage(image, 0, 0, this);
+		g.drawImage(image, 0, 0, this);
+	}
 
-    }
-	
 	@Override
 	public void paint(Graphics g) {
+		g.drawImage(leftBelt.getImage(), 0, 300, this);
+		g.drawImage(rightBelt.getImage(), this.getWidth() - rightBelt.getImage().getWidth(this), 300, this);
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()){
-			case KeyEvent.VK_LEFT:
-			man.leftHand();
+		case KeyEvent.VK_LEFT:
 			System.out.println("Left Hand!");
 			break;
-			
-			case KeyEvent.VK_RIGHT:
-			man.rightHand();
+
+		case KeyEvent.VK_RIGHT:
 			System.out.println("Right Hand!");
 			break;
 		}
@@ -108,27 +111,25 @@ public class Game extends Applet implements Runnable, KeyListener{
 	public void keyReleased(KeyEvent e) {
 		switch(e.getKeyCode()){
 		case KeyEvent.VK_LEFT:
-		man.stopLeft();
-		System.out.println("Stop using left hand!");
-		break;
-		
+			System.out.println("Stop using left hand!");
+			break;
+
 		case KeyEvent.VK_RIGHT:
-		man.stopRight();
-		System.out.println("Stop using right hand!");
-		break;
+			System.out.println("Stop using right hand!");
+			break;
+		}
 	}
-	    
+
+	public URL getBase() {
+		return base;
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-	    // TODO Auto-generated method stub
-	    
+		// TODO Auto-generated method stub
+
 	}
- 
-	public static Background getBg(){
-		return bg;
-	}
-	
-	
+
+
+
 }
