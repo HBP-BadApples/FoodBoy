@@ -38,6 +38,12 @@ public class Queue<E> {
 		return hold.getValue();
 	}
 	
+	public E peek() throws NoSuchElementException {
+		if (numElements == 0)
+			throw new NoSuchElementException();
+		return head.getValue();
+	}
+	
 	public boolean isEmpty() {
 		if (numElements == 0)
 			return true;
