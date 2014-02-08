@@ -16,6 +16,7 @@ public class Game extends Applet implements Runnable, KeyListener{
 	private Image image, character, background;
 	private Graphics second;
 	private URL base;
+	private static Background bg1, bg2;
 	
 	@Override
 	public void init() {
@@ -25,8 +26,15 @@ public class Game extends Applet implements Runnable, KeyListener{
 		setFocusable(true);
 		Frame frame = (Frame)this.getParent().getParent();
 		frame.setTitle("Food Boy");
-		
 		addKeyListener(this);
+		try{
+			base = getDocumentBase();
+		} catch(Exception e){
+			
+		}
+		
+		character = getImage(base, "data/character.png");
+		background = getImage(base, "data/background.png");
 		
 	}
 	
@@ -56,6 +64,27 @@ public class Game extends Applet implements Runnable, KeyListener{
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@Override
+    public void update(Graphics g) {
+        if (image == null) {
+            image = createImage(this.getWidth(), this.getHeight());
+            second = image.getGraphics();
+        }
+
+        second.setColor(getBackground());
+        second.fillRect(0, 0, getWidth(), getHeight());
+        second.setColor(getForeground());
+        paint(second);
+
+        g.drawImage(image, 0, 0, this);
+
+    }
+	
+	@Override
+	public void paint(Graphics g) {
+		// TODO Auto-generated method stub
 	}
 	
 	@Override
